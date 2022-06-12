@@ -22,18 +22,17 @@ import java.util.UUID;
 public class WishListService {
 
 
-    @Autowired
     private WishListRepository repository;
 
-    @Autowired
     private CustomerService customerService;
 
-    @Autowired
     private ProductService productService;
 
     @Autowired
-    public WishListService(WishListRepository repository) {
+    public WishListService(WishListRepository repository,CustomerService customerService,ProductService productService) {
         this.repository = repository;
+        this.customerService = customerService;
+        this.productService = productService;
     }
 
     public WishList add(String idCustomer, String idProduct) {
@@ -44,7 +43,7 @@ public class WishListService {
         Product product = productService.fingById(idProduct);
 
 
-        final Optional<WishList> wishListDB = repository.findByCustomer_Id(idCustomer);
+        Optional<WishList> wishListDB = repository.findByCustomer_Id(idCustomer);
         if (!wishListDB.isPresent()) {
             WishList wishList = WishList.builder()
                     .id(UUID.randomUUID().toString())
