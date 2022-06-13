@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "Luiza Labs - Wishlist Desafio: REST API Clientes")
 public class CustomerController {
 
-
-
     @Autowired
     private CustomerService customerService;
 
