@@ -1,0 +1,32 @@
+FROM maven:3.6.1-jdk-11-slim as maven
+
+LABEL version="1.0.0" description="Wishlist"
+
+ADD . /home/sources
+
+WORKDIR /home/sources/
+
+RUN mvn clean package
+
+FROM openjdk:11.0.5-jre-slim
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+    fontconfig libfreetype6
+
+COPY --from=maven /home/sources/target/API-0.0.1-SNAPSHOT.jar /home/app/app.jar
+
+WORKDIR /home/app
+
+# Abrir porta 8181
+EXPOSE 8181
+
+RUN groupadd nonroot
+RUN useradd -g nonroot nonroot
+RUN usermod -a -G nonroot nonroot
+RUN chown -R nonroot /home/app
+
+USER nonroot
+
+ENTRYPOINT java -Duser.country=BR -Duser.language=pt -Dspring.data.mongodb.uri=$DATABASE_URL -Dspring.data.mongodb.username=$DATABASE_USER -Dspring.data.mongodb.password=$DATABASE_PASSWORD -Dserver.port=$PORT -Dfile.encoding=UTF8 -jar app.jar
