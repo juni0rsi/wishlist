@@ -63,7 +63,7 @@ public class WishListService {
         }
 
 
-        wishListDB.get().getProducts().add(product);
+        wishListDB.get().getProducts().addAll(Arrays.asList(product));
 
         return repository.save(wishListDB.get());
 

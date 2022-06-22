@@ -6,30 +6,28 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "wishlist")
+@Document
 public class WishList {
 
     @Id
-    @Column(name = "ID", nullable = false)
     private String id;
 
-    @OneToOne
-    @JoinColumn(name = "idCustomer")
+    @DBRef
     private Customer customer;
 
-    @ManyToMany
-    @JoinColumn(name = "idProduct")
+    @DBRef
     private List<Product> products = new ArrayList<>();
 
     private LocalDateTime dtInsert;

@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,15 +52,10 @@ public class WishlistServiceUnitTest {
     @DisplayName("Add Wishlist")
     void validAddWishlistTransaction() {
 
-        final Customer customer01 = Customer.builder().id("1").name("Junior Cesar da Silva").cpf("11111111111").build();
+        Customer customer01 = Customer.builder().id("1").name("Junior Cesar da Silva").cpf("11111111111").build();
 
-        final Product produto01 = Product.builder().id("1").name("Produto 01").description("Produto 01").price(BigDecimal.valueOf(50.65)).build();
-        final Product produto02 = Product.builder().id("2").name("Produto 021").description("Produto 02").price(BigDecimal.valueOf(50.65)).build();
-        final Product produto03 = Product.builder().id("3").name("Produto 03").description("Produto 03").price(BigDecimal.valueOf(50.65)).build();
-        final Product produto04 = Product.builder().id("4").name("Produto 04").description("Produto 04").price(BigDecimal.valueOf(50.65)).build();
-        final Product produto05 = Product.builder().id("5").name("Produto 05").description("Produto 05").price(BigDecimal.valueOf(50.65)).build();
-        final Product produto06 = Product.builder().id("6").name("Produto 06").description("Produto 06").price(BigDecimal.valueOf(50.65)).build();
-        final WishList wishslist = WishList.builder().id("1").customer(customer01).products(Arrays.asList(produto01, produto02, produto03, produto04, produto05)).dtInsert(LocalDateTime.now()).build();
+        Product produto06 = Product.builder().id("6").name("Produto 06").description("Produto 06").price(BigDecimal.valueOf(50.65)).build();
+        WishList wishslist = WishList.builder().id("1").customer(customer01).products(new ArrayList<>()).dtInsert(LocalDateTime.now()).build();
 
         doReturn(produto06).when(productService).fingById("6");
         doReturn(customer01).when(customerService).fingById("1");
@@ -73,7 +69,7 @@ public class WishlistServiceUnitTest {
         });
 
 
-        final WishList addWishList = wishListService.add("1", "6");
+        WishList addWishList = wishListService.add("1", "6");
 
         assertNotNull(addWishList.getId());
 
